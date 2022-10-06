@@ -1,0 +1,117 @@
+@startuml chess
+    interface Board {
+        + getPiece(Square)
+    }
+
+    class SquareBoard implements Board{
+        - squares: Square[]
+        + getPiece(Square)
+    }
+
+    interface Square {
+        + hasPiece(): Boolean
+        + getPiece(): Piece
+    }
+
+    class OccupiedSquare implements Square{
+        - piece: Piece
+        + hasPiece(): Boolean
+        + getPiece(): Piece
+    }
+
+    OccupiedSquare o-- Piece
+
+    'Get piece => Error'
+    class EmptySquare implements Square{
+        + hasPiece(): Boolean
+        + getPiece(): Piece
+    }
+
+    class Piece {
+        - name: String
+        - pickedColor: String
+    }
+
+    interface Rule {
+        + validate(Board, Movement)
+    }
+
+    class HorizontalRule implements Rule{
+        + validate(Board, Movement)
+    }
+
+    class VerticalRule implements Rule{
+        + validate(Board, Movement)
+    }
+
+    class LimitRule implements Rule{
+        + validate(Board, Movement)
+    }
+
+    class SkipRule implements Rule{
+        + validate(Board, Movement)
+    }
+
+    class Game {
+        - board: Board
+        - deadPieces: Piece[]
+        - movements: Stack<Movement>
+        - finishValidators: List<FinishValidator>
+        + move(Movement)
+        + checkWinner(): String
+    }
+    Game *-- Board
+    Game o-- Piece
+    Game o-- Movement
+    Game *-- FinishValidator
+    Game --> Movement
+
+    interface FinishValidator {
+        + check(Board): String
+    }
+
+    FinishValidator --> Board
+
+    class CheckMateFinishValidator implements FinishValidator{
+        + check(Board): String
+    }
+
+    class NoPieceFinishValidator implements FinishValidator {
+        + check(Board): String
+    }
+
+    class StalemateFinishValidator implements FinishValidator {
+            + check(Board): String
+    }
+
+    /'King vs King or King vs (King + Bishop | Knight)
+    or King vs (King + 2 Knights) or
+    King + Minor Piece vs King + Minor Piece  '/
+    class InsufficientMaterialFinishValidator implements FinishValidator {
+            + check(Board): String
+    }
+
+    class Movement {
+        - from: Position
+        - to: Position
+    }
+
+    Movement *-- Position
+
+   class Position {
+       - x: Int
+       - y: Int
+   }
+
+   class PieceMover {
+       - piece: Piece
+       - rules: List<Rule>
+       - hasMove: Boolean
+       + move(Board): Board
+   }
+
+   PieceMover *-- Piece
+   PieceMover *-- Rule
+   PieceMover --> Board
+
+@enduml
