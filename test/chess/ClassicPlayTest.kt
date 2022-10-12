@@ -1,4 +1,0 @@
-package chess
-
-class ClassicPlayTest {
-}
