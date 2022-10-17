@@ -10,6 +10,7 @@ class ClassicMover(override val validators: List<Rule>) : Mover {
     }
 
     override fun move(board: Board, movement: Movement): Board {
-        TODO("Not yet implemented")
+        val newBoard = board.changeWithPiece(board.getSquare(movement.from).getPiece(), movement.to)
+        return newBoard.changeToEmpty(movement.from)
     }
 }

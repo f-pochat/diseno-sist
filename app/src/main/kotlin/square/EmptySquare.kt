@@ -1,4 +1,4 @@
-package chess.square
+package square
 
 import piece.Piece
 import square.Square

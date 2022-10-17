@@ -13,8 +13,13 @@ class LimitRule(private val limit: Int): Rule {
     }
 
     override fun validate(board: Board, movement: Movement): Boolean {
-        if (movement.from.x != movement.to.x + limit &&  movement.from.x != movement.to.x - limit &&
-        movement.from.y != movement.to.y + limit &&  movement.from.y != movement.to.y - limit) throw Exception("Didnt move $limit time")
-        return true
+        return if (movement.from.x == movement.to.x){
+            movement.from.y == movement.to.y + limit ||  movement.from.y == movement.to.y - limit
+        }else if (movement.from.y == movement.to.y){
+            movement.from.x == movement.to.x + limit ||  movement.from.x == movement.to.x - limit
+        }else{
+            (movement.from.x == movement.to.x + limit ||  movement.from.x == movement.to.x - limit) &&
+                    (movement.from.y == movement.to.y + limit ||  movement.from.y == movement.to.y - limit)
+        }
     }
 }

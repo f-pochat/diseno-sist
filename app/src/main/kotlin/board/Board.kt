@@ -7,8 +7,14 @@ import position.Position
 
 interface Board{
     fun getSquare(position: Position): Square
-    fun move(movement: Movement)
 
     fun getPositionFromPiece(piece: Piece): Position
+
+    fun changeWithPiece(piece: Piece, position: Position): Board
+
+    fun changeToEmpty(position: Position): Board
+
+    fun getPieces(): List<Piece>
+
     fun printBoard()
 }

@@ -1,16 +1,3 @@
-import board.Board
-import board.SquaredBoard
-import game.Game
-import movement.Movement
-import piece.Piece
-import position.Position
-import chess.square.EmptySquare
-import chess.square.OccupiedSquare
-import square.Square
-import org.junit.Test
-import rule.*
-import kotlin.test.assertEquals
-
 class ClassicPlayTest {
 //    private val horizontalAndRule: AndRule = HorizontalAndRule.Companion.getRule()
 //    private val verticalRule: AndRule = VerticalRule.Companion.getRule()

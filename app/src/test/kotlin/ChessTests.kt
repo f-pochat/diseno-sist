@@ -1,6 +1,6 @@
 import board.Board
 import board.SquaredBoard
-import chess.square.EmptySquare
+import square.EmptySquare
 import chess.square.OccupiedSquare
 import factory.PieceFactory
 import square.Square
@@ -8,10 +8,10 @@ import movement.Movement
 import org.junit.Test
 import piece.Piece
 import position.Position
-import rule.*
 import java.io.File
 import java.util.stream.IntStream
 import kotlin.test.assertFails
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class ChessTests {
@@ -40,12 +40,19 @@ class ChessTests {
                 }else if (line[i] == "OO") {
                     validSquares.add(Position(intToChar(i), y))
                     x.add(EmptySquare())
-                }else if(line[i] == "  "){
+                }else if(line[i] == "  ") {
                     x.add(EmptySquare())
+                }else if(line[i].length == 3){
+                    validSquares.add(Position(intToChar(i), y))
+                    x.add(OccupiedSquare(toPiece(line[i].substring(1))))
                 }else if(line[i].all { c -> c.isUpperCase() }){
-                    val piece = toPiece(line[i])
-                    mainPiece = piece
-                    x.add(OccupiedSquare(piece))
+                    if (mainPiece == null){
+                        val piece = toPiece(line[i])
+                        mainPiece = piece
+                        x.add(OccupiedSquare(piece))
+                    }else{
+                        throw Exception("Can only have one main piece!")
+                    }
                 }else{
                     x.add(OccupiedSquare(toPiece(line[i])))
                 }
@@ -72,7 +79,7 @@ class ChessTests {
         }else if(str[1].lowercaseChar() == 'b'){
             "Black"
         }else{
-            throw Exception("Color not valid")
+            throw Exception("Color not found")
         }
 
         return when(str[0].lowercaseChar()){
@@ -85,16 +92,17 @@ class ChessTests {
             else -> {throw Exception("Piece not valid")}
         }
     }
-//
+
 //    @Test
 //    fun checkValidMovements(){
 //        val file = "/home/fedepochat/faculty/diseno-sist/app/src/test/resources/board.txt"
 //        val testBoard = parseBoard(file)
+//        val board = testBoard.board
 //        testBoard.validSquares.forEach { s ->
 //            println(testBoard.board.getPositionFromPiece(testBoard.mainPiece).x)
 //            println(testBoard.board.getPositionFromPiece(testBoard.mainPiece).y)
 //            println("Testing" + s.x + s.y)
-//            assertTrue { testBoard.mainPiece.validate(testBoard.board, Movement(testBoard.board.getPositionFromPiece(testBoard.mainPiece),s)) }
+//            assertTrue { testBoard.mainPiece.move(board, Movement(board.getPositionFromPiece(testBoard.mainPiece),s)).getSquare(s).getPiece() == testBoard.mainPiece }
 //        }
 //    }
 //
@@ -103,7 +111,10 @@ class ChessTests {
 //        val file = "/home/fedepochat/faculty/diseno-sist/app/src/test/resources/board.txt"
 //        val testBoard = parseBoard(file)
 //        testBoard.invalidSquares.forEach { s ->
-//            assertFails { testBoard.mainPiece.validate(testBoard.board, Movement(testBoard.board.getPositionFromPiece(testBoard.mainPiece),s)) }
+//            println(testBoard.board.getPositionFromPiece(testBoard.mainPiece).x)
+//            println(testBoard.board.getPositionFromPiece(testBoard.mainPiece).y)
+//            println("Testing" + s.x + s.y)
+//            assertFalse { testBoard.mainPiece.move(testBoard.board, Movement(testBoard.board.getPositionFromPiece(testBoard.mainPiece),s)).getSquare(s).hasPiece() }
 //        }
 //    }
 }

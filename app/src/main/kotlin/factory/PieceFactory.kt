@@ -1,5 +1,6 @@
 package factory
 
+import mover.CastlingMover
 import mover.ClassicMover
 import piece.Piece
 import rule.*
@@ -14,8 +15,8 @@ class PieceFactory {
     private val commonForAllRules = listOf(NoSameSquareRule.getRule(), NotSameColorRule.getRule())
     fun pawn(color: String): Piece {
         return Piece("Pawn" , color, commonForAllRules, listOf(
-            ClassicMover(listOf(VerticalRule.getRule(), LimitRule.getLimitOneRule())),
-            ClassicMover(listOf(VerticalRule.getRule(), LimitRule.getLimitTwoRule(), HasntMovedRule.getRule(), ClearPathRule.getRule())),
+            ClassicMover(listOf(VerticalRule.getRule(), LimitRule.getLimitOneRule(), IsEmptyRule.getRule())),
+            ClassicMover(listOf(VerticalRule.getRule(), LimitRule.getLimitTwoRule(), HasntMovedRule.getRule(), ClearPathRule.getRule(),  IsEmptyRule.getRule())),
             ClassicMover(listOf(DiagonalRule.getRule(), LimitRule.getLimitOneRule(), IsEatingRule.getRule() ))
         ))
     }
@@ -41,9 +42,10 @@ class PieceFactory {
 
     fun king(color: String): Piece {
         return Piece("King" , color, commonForAllRules, listOf(
+            CastlingMover(listOf(ClearPathRule.getRule(), HorizontalRule.getRule(), LimitRule.getLimitTwoRule(), TheresRookRule.getRule(), HasntMovedRule.getRule())),
             ClassicMover(listOf(VerticalRule.getRule(), LimitRule.getLimitOneRule())),
             ClassicMover(listOf(HorizontalRule.getRule(), LimitRule.getLimitOneRule())),
-            ClassicMover(listOf(DiagonalRule.getRule(), LimitRule.getLimitOneRule())),
+            ClassicMover(listOf(DiagonalRule.getRule(), LimitRule.getLimitOneRule()))
         ))
     }
 

@@ -9,7 +9,8 @@ class IsEatingRule: Rule {
         private val isEatingRule: Rule = IsEatingRule()
     }
     override fun validate(board: Board, movement: Movement): Boolean {
-        TODO("Implement")
+        return board.getSquare(movement.to).hasPiece()
+                && board.getSquare(movement.to).getPiece().getColor() != board.getSquare(movement.from).getPiece().getColor()
     }
 
 }

@@ -12,11 +12,21 @@ plugins {
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+
+    id("org.openjfx.javafxplugin").version("0.0.13")
+
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    maven {
+        url = uri("https://maven.pkg.github.com/austral-ingsis/chess-ui")
+        credentials {
+            username = System.getenv("GITHUB_USER")
+            password = System.getenv("GITHUB_TOKEN")
+        }
+    }
 }
 
 dependencies {
@@ -34,6 +44,13 @@ dependencies {
 
     // Use the Kotlin JUnit integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+
+    implementation("edu.austral.dissis.chess:chess-ui:1.0.0")
+}
+
+javafx {
+    version = "18"
+    modules = listOf("javafx.graphics")
 }
 
 application {
