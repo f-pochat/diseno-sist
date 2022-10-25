@@ -1,4 +1,4 @@
-package chess.finish_rule
+package finish_rule
 
 import board.Board
 

@@ -1,29 +1,37 @@
 package piece
 
 import board.Board
+import factory.PieceFactory
+import game.Game
 import movement.Movement
 import mover.Mover
 import rule.Rule
 
 class Piece(
-    private val name: String,
+    private var name: String,
     private val color: String,
     private val commonRules: List<Rule>,
-    private val movers: List<Mover>
+    private var movers: List<Mover>,
+    private var uniqueId: String? = null
 ){
-    private var hasMoved: Boolean = false
     private val id: String = name.lowercase() + color.lowercase()
     fun getName(): String = name
     fun getColor(): String = color
-    fun getHasMoved(): Boolean = hasMoved
+
+    fun getUniqueId(): String {
+        if (uniqueId.isNullOrBlank()){
+            uniqueId = this.hashCode().toString()
+        }
+        return uniqueId!!
+    }
 
     fun getId(): String = id
 
-    fun move(board: Board, movement: Movement): Board {
-        if (commonRules.any { !it.validate(board, movement) }) return board
+    fun move(game: Game, movement: Movement): Board {
+        val board = game.getBoard()
+        if (commonRules.any { !it.validate(game, movement) }) return board
         for (m in movers){
-            if (m.canMove(board, movement)){
-                hasMoved = true
+            if (m.canMove(game, movement)){
                 return m.move(board, movement)
             }
         }

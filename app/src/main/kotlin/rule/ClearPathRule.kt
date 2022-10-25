@@ -1,6 +1,7 @@
 package rule
 
 import board.Board
+import game.Game
 import movement.Movement
 import position.Position
 
@@ -9,7 +10,8 @@ class ClearPathRule: Rule {
         fun getRule(): Rule = clearPathRule
         private val clearPathRule: Rule = ClearPathRule()
     }
-    override fun validate(board: Board, movement: Movement): Boolean {
+    override fun validate(game: Game, movement: Movement): Boolean {
+        val board = game.getBoard()
         val distX = movement.to.x - movement.from.x
         val distY = movement.to.y - movement.from.y
         if (distX == 0 && distY > 0) {

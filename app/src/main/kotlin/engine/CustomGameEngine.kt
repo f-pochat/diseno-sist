@@ -7,6 +7,10 @@ class CustomGameEngine: GameEngine {
     override fun applyMove(move: Move): MoveResult {
         return try {
             classicGame.move(move)
+            val winner = classicGame.hasWinner()
+            if (winner != ""){
+                return GameOver(classicGame.getWinner())
+            }
             NewGameState(classicGame.pieces(),classicGame.nextMove())
         }catch (e: Exception){
             InvalidMove(e.message!!)

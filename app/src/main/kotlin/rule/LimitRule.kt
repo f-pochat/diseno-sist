@@ -1,6 +1,7 @@
 package rule
 
 import board.Board
+import game.Game
 import movement.Movement
 
 class LimitRule(private val limit: Int): Rule {
@@ -12,7 +13,7 @@ class LimitRule(private val limit: Int): Rule {
         private val limitTwoRule: Rule = LimitRule(2)
     }
 
-    override fun validate(board: Board, movement: Movement): Boolean {
+    override fun validate(game: Game, movement: Movement): Boolean {
         return if (movement.from.x == movement.to.x){
             movement.from.y == movement.to.y + limit ||  movement.from.y == movement.to.y - limit
         }else if (movement.from.y == movement.to.y){

@@ -25,11 +25,11 @@ class ClassicGame {
         OccupiedSquare(pf.queen("Black")),
         OccupiedSquare(pf.bishop("Black")),
         OccupiedSquare(pf.knight("Black")),
-        OccupiedSquare(pf.rook("Black")),
-        )
+        OccupiedSquare(pf.rook("Black")),)
 
     private val secondRow: Array<Square> = Array(8) { OccupiedSquare(pf.pawn("Black"))}
     private val seventhRow: Array<Square> = Array(8) { OccupiedSquare(pf.pawn("White"))}
+
     private val eighthRow: Array<Square> = arrayOf(
         OccupiedSquare(pf.rook("White")),
         OccupiedSquare(pf.knight("White")),
@@ -52,6 +52,8 @@ class ClassicGame {
         eighthRow
     ))
 
+    private val game = Game(board)
+
     fun pieces(): List<ChessPiece>{
         val newPieces = mutableListOf<ChessPiece>()
         val pieces = board.getPieces()
@@ -60,7 +62,7 @@ class ClassicGame {
     }
 
     private fun pieceToUIPiece(piece: Piece): ChessPiece {
-        return ChessPiece(piece.hashCode().toString(), if(piece.getColor() == "Black"){ PlayerColor.BLACK} else { PlayerColor.WHITE},Pos(board.getPositionFromPiece(piece).y, charToInt(board.getPositionFromPiece(piece).x)+1) ,piece.getName().lowercase() )
+        return ChessPiece(piece.getUniqueId(), if(piece.getColor() == "Black"){ PlayerColor.BLACK} else { PlayerColor.WHITE},Pos(board.getPositionFromPiece(piece).y, charToInt(board.getPositionFromPiece(piece).x)+1) ,piece.getName().lowercase() )
     }
 
     private fun charToInt(char: Char): Int {
@@ -70,8 +72,6 @@ class ClassicGame {
     private fun intToChar(i: Int): Char{
         return (i+10).digitToChar(18)
     }
-
-    private val game = Game(board)
 
     fun move(move: Move) {
         val from = Position(intToChar(move.from.column-1), move.from.row)
@@ -84,6 +84,20 @@ class ClassicGame {
             PlayerColor.WHITE
         }else{
             PlayerColor.BLACK
+        }
+    }
+
+    fun hasWinner(): String {
+        println(game.getWinner())
+        return game.getWinner()
+    }
+
+    fun getWinner(): PlayerColor {
+        val winner = hasWinner()
+        return if(winner == "Black"){
+            PlayerColor.BLACK
+        }else {
+            PlayerColor.WHITE
         }
     }
 }

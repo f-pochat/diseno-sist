@@ -1,6 +1,7 @@
 package rule
 
 import board.Board
+import game.Game
 import movement.Movement
 
 class IsEmptyRule: Rule {
@@ -8,7 +9,8 @@ class IsEmptyRule: Rule {
         fun getRule(): Rule = isEmptyRule
         private val isEmptyRule: Rule = IsEmptyRule()
     }
-    override fun validate(board: Board, movement: Movement): Boolean {
+    override fun validate(game: Game, movement: Movement): Boolean {
+        val board = game.getBoard()
         return !board.getSquare(movement.to).hasPiece()
     }
 

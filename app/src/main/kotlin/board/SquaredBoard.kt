@@ -3,6 +3,7 @@ package board
 import piece.Piece
 import square.EmptySquare
 import chess.square.OccupiedSquare
+import factory.PieceFactory
 import position.Position
 import square.Square
 
@@ -27,13 +28,19 @@ class SquaredBoard(
         //Because arrays are 0-7
         val auxSquares = squares
         auxSquares[position.y - 1][charToInt(position.x)] = OccupiedSquare(piece)
-        println(squares[position.y - 1][charToInt(position.x)].getPiece().getName())
         return SquaredBoard(auxSquares)
     }
     override fun changeToEmpty(position: Position): Board {
         //Because arrays are 0-7
         val auxSquares = squares.clone()
         auxSquares[position.y - 1][charToInt(position.x)] = EmptySquare()
+        return SquaredBoard(auxSquares)
+    }
+
+    override fun changeToQueenWithMove(piece: Piece, position: Position): Board {
+        val pf = PieceFactory()
+        val auxSquares = squares
+        auxSquares[position.y - 1][charToInt(position.x)] = OccupiedSquare(pf.queen(piece.getColor(), piece.getUniqueId()))
         return SquaredBoard(auxSquares)
     }
 
@@ -50,6 +57,10 @@ class SquaredBoard(
             }
         }
         return pieces
+    }
+
+    override fun getNumberOfRows(): Int {
+        return squares[0].size
     }
 
     override fun getPositionFromPiece(piece: Piece): Position {

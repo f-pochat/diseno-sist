@@ -14,7 +14,11 @@ interface Board{
 
     fun changeToEmpty(position: Position): Board
 
+    fun changeToQueenWithMove(piece: Piece, position: Position): Board
+
     fun getPieces(): List<Piece>
+
+    fun getNumberOfRows(): Int
 
     fun printBoard()
 }
