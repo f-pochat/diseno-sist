@@ -1,13 +1,12 @@
 package rule
 
-import board.Board
 import game.Game
 import movement.Movement
 import kotlin.math.abs
 
-class DiagonalRule: Rule {
+class DiagonalRule : Rule {
 
-    companion object{
+    companion object {
         fun getRule(): Rule = diagonalRule
         private val diagonalRule: Rule = DiagonalRule()
     }
@@ -15,5 +14,4 @@ class DiagonalRule: Rule {
     override fun validate(game: Game, movement: Movement): Boolean {
         return abs(movement.from.x - movement.to.x) == abs(movement.from.y - movement.to.y)
     }
-
 }

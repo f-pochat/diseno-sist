@@ -1,6 +1,5 @@
 package rule
 
-import board.Board
 import game.Game
 import movement.Movement
 

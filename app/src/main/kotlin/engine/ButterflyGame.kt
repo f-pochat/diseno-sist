@@ -15,7 +15,7 @@ import square.OccupiedSquare
 import square.Square
 import edu.austral.dissis.chess.gui.Position as Pos
 
-class ClassicGame : GameMode {
+class ButterflyGame : GameMode {
     override fun getBoard(): Board {
         return board
     }
@@ -32,8 +32,70 @@ class ClassicGame : GameMode {
         OccupiedSquare(pf.rook("Black"))
     )
 
-    private val secondRow: Array<Square> = Array(8) { OccupiedSquare(pf.pawn("Black", 6)) }
-    private val seventhRow: Array<Square> = Array(8) { OccupiedSquare(pf.pawn("White", 1)) }
+    private val secondRow: Array<Square> = arrayOf(
+        OccupiedSquare(pf.pawn("Black", 6)),
+        EmptySquare(),
+        EmptySquare(),
+        EmptySquare(),
+        EmptySquare(),
+        EmptySquare(),
+        EmptySquare(),
+        OccupiedSquare(pf.pawn("Black", 6))
+    )
+    private val thirdRow: Array<Square> = arrayOf(
+        EmptySquare(),
+        OccupiedSquare(pf.pawn("Black", 5)),
+        EmptySquare(),
+        EmptySquare(),
+        EmptySquare(),
+        EmptySquare(),
+        OccupiedSquare(pf.pawn("Black", 5)),
+        EmptySquare()
+    )
+
+    private val forthRow: Array<Square> = arrayOf(
+        EmptySquare(),
+        EmptySquare(),
+        OccupiedSquare(pf.pawn("Black", 4)),
+        OccupiedSquare(pf.pawn("White", 4)),
+        OccupiedSquare(pf.pawn("White", 4)),
+        OccupiedSquare(pf.pawn("Black", 4)),
+        EmptySquare(),
+        EmptySquare()
+    )
+
+    private val fifthRow: Array<Square> = arrayOf(
+        EmptySquare(),
+        EmptySquare(),
+        OccupiedSquare(pf.pawn("White", 3)),
+        OccupiedSquare(pf.pawn("Black", 3)),
+        OccupiedSquare(pf.pawn("Black", 3)),
+        OccupiedSquare(pf.pawn("White", 3)),
+        EmptySquare(),
+        EmptySquare()
+    )
+
+    private val sixthRow: Array<Square> = arrayOf(
+        EmptySquare(),
+        OccupiedSquare(pf.pawn("White", 2)),
+        EmptySquare(),
+        EmptySquare(),
+        EmptySquare(),
+        EmptySquare(),
+        OccupiedSquare(pf.pawn("White", 2)),
+        EmptySquare()
+    )
+
+    private val seventhRow: Array<Square> = arrayOf(
+        OccupiedSquare(pf.pawn("White", 1)),
+        EmptySquare(),
+        EmptySquare(),
+        EmptySquare(),
+        EmptySquare(),
+        EmptySquare(),
+        EmptySquare(),
+        OccupiedSquare(pf.pawn("White", 1))
+    )
 
     private val eighthRow: Array<Square> = arrayOf(
         OccupiedSquare(pf.rook("White")),
@@ -50,10 +112,10 @@ class ClassicGame : GameMode {
         arrayOf(
             firstRow,
             secondRow,
-            Array(8) { EmptySquare() },
-            Array(8) { EmptySquare() },
-            Array(8) { EmptySquare() },
-            Array(8) { EmptySquare() },
+            thirdRow,
+            forthRow,
+            fifthRow,
+            sixthRow,
             seventhRow,
             eighthRow
         )
@@ -91,25 +153,9 @@ class ClassicGame : GameMode {
 
     override fun move(move: Move) {
         val from = Position(intToChar(move.from.column - 1), move.from.row)
-        val to = Position(intToChar(convertToZeroIndex(move)), move.to.row)
+        val to = Position(intToChar(move.to.column - 1), move.to.row)
         board = game.playerMove(Movement(from, to))
     }
-
-    object MovementAdapter {
-        operator fun invoke(move: Move): Movement {
-            val from = Position(intToChar(move.from.column - 1), move.from.row)
-            val to = Position(intToChar(convertToZeroIndex(move)), move.to.row)
-            return Movement(from, to)
-        }
-
-        private fun intToChar(i: Int): Char {
-            return (i + 10).digitToChar(18)
-        }
-
-        private fun convertToZeroIndex(move: Move) = move.to.column - 1
-    }
-
-    private fun convertToZeroIndex(move: Move) = move.to.column - 1
 
     override fun nextMove(): PlayerColor {
         return if (game.getLastMove() == "Black") {

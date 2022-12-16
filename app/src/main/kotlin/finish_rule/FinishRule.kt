@@ -1,7 +1,7 @@
 package finish_rule
 
-import board.Board
+import game.Game
 
 interface FinishRule {
-    fun checkFinish(board: Board): String
+    fun check(gameState: Game): FinishResult
 }

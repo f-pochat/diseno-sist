@@ -15,7 +15,7 @@ import square.OccupiedSquare
 import square.Square
 import edu.austral.dissis.chess.gui.Position as Pos
 
-class ClassicGame : GameMode {
+class FischerGame : GameMode {
     override fun getBoard(): Board {
         return board
     }
@@ -23,13 +23,13 @@ class ClassicGame : GameMode {
     private val pf = PieceFactory()
     private val firstRow: Array<Square> = arrayOf(
         OccupiedSquare(pf.rook("Black")),
-        OccupiedSquare(pf.knight("Black")),
         OccupiedSquare(pf.bishop("Black")),
         OccupiedSquare(pf.queen("Black")),
         OccupiedSquare(pf.king("Black")),
         OccupiedSquare(pf.bishop("Black")),
         OccupiedSquare(pf.knight("Black")),
-        OccupiedSquare(pf.rook("Black"))
+        OccupiedSquare(pf.rook("Black")),
+        OccupiedSquare(pf.knight("Black"))
     )
 
     private val secondRow: Array<Square> = Array(8) { OccupiedSquare(pf.pawn("Black", 6)) }
@@ -37,13 +37,13 @@ class ClassicGame : GameMode {
 
     private val eighthRow: Array<Square> = arrayOf(
         OccupiedSquare(pf.rook("White")),
-        OccupiedSquare(pf.knight("White")),
         OccupiedSquare(pf.bishop("White")),
         OccupiedSquare(pf.queen("White")),
         OccupiedSquare(pf.king("White")),
         OccupiedSquare(pf.bishop("White")),
         OccupiedSquare(pf.knight("White")),
-        OccupiedSquare(pf.rook("White"))
+        OccupiedSquare(pf.rook("White")),
+        OccupiedSquare(pf.knight("White"))
     )
 
     private var board: Board = SquaredBoard(
@@ -91,25 +91,9 @@ class ClassicGame : GameMode {
 
     override fun move(move: Move) {
         val from = Position(intToChar(move.from.column - 1), move.from.row)
-        val to = Position(intToChar(convertToZeroIndex(move)), move.to.row)
+        val to = Position(intToChar(move.to.column - 1), move.to.row)
         board = game.playerMove(Movement(from, to))
     }
-
-    object MovementAdapter {
-        operator fun invoke(move: Move): Movement {
-            val from = Position(intToChar(move.from.column - 1), move.from.row)
-            val to = Position(intToChar(convertToZeroIndex(move)), move.to.row)
-            return Movement(from, to)
-        }
-
-        private fun intToChar(i: Int): Char {
-            return (i + 10).digitToChar(18)
-        }
-
-        private fun convertToZeroIndex(move: Move) = move.to.column - 1
-    }
-
-    private fun convertToZeroIndex(move: Move) = move.to.column - 1
 
     override fun nextMove(): PlayerColor {
         return if (game.getLastMove() == "Black") {

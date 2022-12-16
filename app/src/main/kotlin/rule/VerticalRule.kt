@@ -1,10 +1,9 @@
 package rule
 
-import board.Board
 import game.Game
 import movement.Movement
 
-class VerticalRule: Rule {
+class VerticalRule : Rule {
     companion object {
         fun getRule(): Rule = verticalRule
         private val verticalRule: Rule = VerticalRule()

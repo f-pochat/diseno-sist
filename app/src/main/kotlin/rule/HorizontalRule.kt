@@ -1,11 +1,9 @@
 package rule
 
-import board.Board
 import game.Game
 import movement.Movement
 
-
-class HorizontalRule: Rule {
+class HorizontalRule : Rule {
 
     companion object {
         fun getRule(): Rule = horizontalRule
@@ -16,4 +14,3 @@ class HorizontalRule: Rule {
         return movement.to.y == movement.from.y
     }
 }
-

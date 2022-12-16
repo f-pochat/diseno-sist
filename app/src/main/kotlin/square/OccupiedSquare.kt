@@ -1,7 +1,6 @@
-package chess.square
+package square
 
 import piece.Piece
-import square.Square
 
 class OccupiedSquare(private val pieceOn: Piece) : Square {
 
@@ -11,5 +10,9 @@ class OccupiedSquare(private val pieceOn: Piece) : Square {
 
     override fun getPiece(): Piece {
         return pieceOn
+    }
+
+    override fun clone(): Square {
+        return OccupiedSquare(pieceOn.clone())
     }
 }

@@ -1,11 +1,10 @@
 package board
 
-import square.Square
-import movement.Movement
 import piece.Piece
 import position.Position
+import square.Square
 
-interface Board{
+interface Board {
     fun getSquare(position: Position): Square
 
     fun getPositionFromPiece(piece: Piece): Position
@@ -20,5 +19,12 @@ interface Board{
 
     fun getNumberOfRows(): Int
 
+    fun getNumberOfColumns(): Int
+
+    fun getLastRow(): Char
     fun printBoard()
+
+    fun getSquares(): Array<Array<Square>>
+
+    fun clone(): Board
 }

@@ -1,7 +1,6 @@
 package square
 
 import piece.Piece
-import square.Square
 
 class EmptySquare : Square {
     override fun hasPiece(): Boolean {
@@ -10,5 +9,9 @@ class EmptySquare : Square {
 
     override fun getPiece(): Piece {
         throw Exception("No piece found!")
+    }
+
+    override fun clone(): Square {
+        return EmptySquare()
     }
 }

@@ -1,18 +1,13 @@
 import board.Board
 import board.SquaredBoard
-import square.EmptySquare
-import chess.square.OccupiedSquare
 import factory.PieceFactory
-import square.Square
-import movement.Movement
-import org.junit.Test
 import piece.Piece
 import position.Position
+import square.EmptySquare
+import square.OccupiedSquare
+import square.Square
 import java.io.File
 import java.util.stream.IntStream
-import kotlin.test.assertFails
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 class ChessTests {
 
@@ -20,7 +15,7 @@ class ChessTests {
         val validSquares: MutableList<Position>,
         val invalidSquares: MutableList<Position>,
         val mainPiece: Piece,
-        val board: Board,
+        val board: Board
     )
 
     private fun parseBoard(pathName: String): TestBoard {
@@ -32,28 +27,27 @@ class ChessTests {
             val x = mutableListOf<Square>()
             val line = it.split("|")
             val y = line[0].toInt()
-            println(line)
-            IntStream.range(1, line.size-1).forEach { i ->
+            IntStream.range(1, line.size - 1).forEach { i ->
                 if (line[i] == "XX") {
                     invalidSquares.add(Position(intToChar(i), y))
                     x.add(EmptySquare())
-                }else if (line[i] == "OO") {
+                } else if (line[i] == "OO") {
                     validSquares.add(Position(intToChar(i), y))
                     x.add(EmptySquare())
-                }else if(line[i] == "  ") {
+                } else if (line[i] == "  ") {
                     x.add(EmptySquare())
-                }else if(line[i].length == 3){
+                } else if (line[i].length == 3) {
                     validSquares.add(Position(intToChar(i), y))
                     x.add(OccupiedSquare(toPiece(line[i].substring(1))))
-                }else if(line[i].all { c -> c.isUpperCase() }){
-                    if (mainPiece == null){
+                } else if (line[i].all { c -> c.isUpperCase() }) {
+                    if (mainPiece == null) {
                         val piece = toPiece(line[i])
                         mainPiece = piece
                         x.add(OccupiedSquare(piece))
-                    }else{
+                    } else {
                         throw Exception("Can only have one main piece!")
                     }
-                }else{
+                } else {
                     x.add(OccupiedSquare(toPiece(line[i])))
                 }
             }
@@ -68,7 +62,7 @@ class ChessTests {
         )
     }
 
-    private fun intToChar(num: Int): Char{
+    private fun intToChar(num: Int): Char {
         return (num + 9).toString(18)[0].uppercaseChar()
     }
 
@@ -76,20 +70,22 @@ class ChessTests {
         val factory = PieceFactory.get()
         val color: String = if (str[1].lowercaseChar() == 'w') {
             "White"
-        }else if(str[1].lowercaseChar() == 'b'){
+        } else if (str[1].lowercaseChar() == 'b') {
             "Black"
-        }else{
+        } else {
             throw Exception("Color not found")
         }
 
-        return when(str[0].lowercaseChar()){
-            'p' -> factory.pawn(color)
+        return when (str[0].lowercaseChar()) {
+            'p' -> factory.pawn(color, 0)
             'r' -> factory.rook(color)
             'h' -> factory.knight(color)
             'b' -> factory.bishop(color)
             'q' -> factory.queen(color)
             'k' -> factory.king(color)
-            else -> {throw Exception("Piece not valid")}
+            else -> {
+                throw Exception("Piece not valid")
+            }
         }
     }
 
